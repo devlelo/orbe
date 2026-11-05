@@ -11,7 +11,7 @@ Aplicação web progressiva (PWA) para gestão simples de pequenos negócios. In
 - Atualização automática do stock e histórico de movimentos.
 - Painel diário, lucro estimado, alertas de stock.
 - Exportação de vendas CSV (compatível com Excel), relatório imprimível/Guardar como PDF e backup/restauro JSON.
-- IndexedDB como armazenamento principal; fallback para LocalStorage em navegadores sem IndexedDB.
+- IndexedDB como armazenamento local principal (requer um navegador moderno com suporte a IndexedDB).
 - PWA com cache dos ficheiros essenciais para abrir offline depois da primeira visita.
 
 ## Executar localmente
