@@ -18,7 +18,7 @@ async function all(n){let r=db.exec('SELECT data FROM '+n);return r.length?r[0].
 async function put(n,x){db.run('INSERT OR REPLACE INTO '+n+' (id,data) VALUES (?,?)',[String(x.id||'main'),JSON.stringify(x)]);await saveDB()}
 async function del(n,k){db.run('DELETE FROM '+n+' WHERE id=?',[String(k)]);await saveDB()}
 async function load(){for(let n of ['products','sales','customers','moves'])dbdata[n]=await all(n);let s=await all('settings');if(s[0])cfg=s[0].value||cfg;else await put('settings',{id:'main',value:cfg})}
-function go(p)function go(p){page=p;cart=[];draw()}
+function go(p){page=p;cart=[];draw()}
 function nav(){let p=pages.find(x=>x[0]===page)||pages[0];$('#top').innerHTML='<div class="top-left">'+(page==='home'?'<span class="brandmark">◉</span>':'<button class="back" id="back" aria-label="Voltar">‹</button>')+'<span>'+(page==='home'?'Orbe':p[2])+'</span></div><button class="btn" id="install" style="display:none">Instalar app</button>';if($('#back'))$('#back').onclick=()=>go('home');if(installPrompt)$('#install').style.display='block';if($('#install'))$('#install').onclick=installApp}
 function head(h,s,button=''){return '<div class="head"><div><h1>'+h+'</h1><div class="muted">'+s+'</div></div>'+button+'</div>'}
 function table(h,rows){return '<div class="scroll"><table><thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+h.length+'" class="empty">Ainda sem registos.</td></tr>')+'</tbody></table></div>'}
@@ -45,6 +45,7 @@ let installPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preve
 async function startApp(){try{$('#welcome').style.display='none';$('#app').innerHTML='<div class="card">A preparar a base de dados SQLite…</div>';await openDB();await load();draw();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{})}catch(e){$('#app').innerHTML='<div class="card">Não foi possível iniciar o SQLite. Na primeira abertura, confirma a ligação à internet e tenta novamente.</div>';console.error(e)}}
 $('#use-device').onclick=async()=>{await kvOpen();await kvSet('storage-mode','device');await startApp()};
 if(window.showDirectoryPicker){$('#choose-folder').style.display='block';$('#choose-folder').onclick=async()=>{try{await kvOpen();folderHandle=await window.showDirectoryPicker({mode:'readwrite'});await kvSet('folder-handle',folderHandle);await kvSet('storage-mode','folder');await startApp()}catch(e){if(e.name!=='AbortError')msg('Não foi possível aceder à pasta')}}}
-(async()=>{try{await kvOpen();let mode=await kvGet('storage-mode');if(mode){await startApp()}else{$('#welcome').style.display='flex'}}catch(e){$('#welcome').style.display='flex'}})();document.addEventListener('click',e=>{if(e.target.id==='csv')csv();if(e.target.id==='print')window.print();if(e.target.id==='backup')backup()});})();document.addEventListener('click',e=>{if(e.target.id==='csv')csv();if(e.target.id==='print')window.print();if(e.target.id==='backup')backup()});
+(async()=>{try{await kvOpen();let mode=await kvGet('storage-mode');if(mode){await startApp()}else{$('#welcome').style.display='flex'}}catch(e){$('#welcome').style.display='flex'}})();
+document.addEventListener('click',e=>{if(e.target.id==='csv')csv();if(e.target.id==='print')window.print();if(e.target.id==='backup')backup()});
 })();
 </script></body></html>
