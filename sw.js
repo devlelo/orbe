@@ -1,4 +1,4 @@
-const CACHE='orbe-shell-v2';
+const CACHE='orbeo-shell-v3';
 const FILES=['./','./index.html','./manifest.webmanifest','./icon.svg'];
 const REMOTE=['https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js','https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.wasm'];
 self.addEventListener('install',e=>e.waitUntil((async()=>{const c=await caches.open(CACHE);await c.addAll(FILES);await Promise.all(REMOTE.map(u=>c.add(u).catch(()=>{})));await self.skipWaiting()})()));
